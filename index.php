@@ -42,5 +42,26 @@ function menu_details_callback(){
             echo "Emails: {$result->email}";
         }
     }
+    ?>
+    <form action="" method="POST">
+        <?php 
+        wp_nonce_field('dbname', 'nonce',);
+        ?>
+        <input type="text" name="name" id="">
+        <input type="text" name="email" id="">
+        <?php submit_button('Add record') ?>
+    </form>
+    <?php
+    if(isset($_POST['submit'])){
+        $nonce = $_POST['nonce'];
+        if(wp_verify_nonce($nonce,'dbname')){
+            $name = $_POST['name'];
+            $email = $_POST['email'];
+            $wpdb->insert($table_name,['p_name' => $name, 'email' => $email]);
+        }else{
+            echo 'you are not allow this';
+        }
+    }
 }
+
 ?>
